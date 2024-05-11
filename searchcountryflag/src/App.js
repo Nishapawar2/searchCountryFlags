@@ -5,7 +5,7 @@ import axios from "axios";
 export default function App() {
   const [countries, setCountries] = useState([]);
   const [filterCountries, setFilterCountries] = useState([]);
-  const [search, setSearch] = useState("");
+
   useEffect(() => {
     axios
       .get("https://restcountries.com/v3.1/all")
@@ -16,21 +16,25 @@ export default function App() {
       .catch((error) => console.log(error));
   }, []);
 
-  const onChangeHandler = (e) => {
-    e.preventDefault();
-    const searchVal = e.target.value;
-    setSearch(searchVal);
-    if (search !== "" && search.length>0) {
+  const onChangeHandler = (searchVal) => {
+    if (searchVal !== "" && searchVal.length > 0) {
       const filterBySearch = countries.filter((item) => {
-        return item.name.common.toLowerCase().includes(search.toLowerCase());
+        return item.name.common.toLowerCase().includes(searchVal.toLowerCase());
       });
       setFilterCountries(filterBySearch);
-    } 
+    } else {
+      setFilterCountries(countries);
+    }
   };
 
   return (
     <div className="App">
-      <input type="text" value={search} onChange={onChangeHandler} className="searchInput" placeholder="Search for countries"/>
+      <input
+        type="text"
+        onChange={(e) => onChangeHandler(e.target.value)}
+        className="searchInput"
+        placeholder="Search for countries"
+      />
       <div className="MainContainer">
         {filterCountries.map((country) => {
           return (
