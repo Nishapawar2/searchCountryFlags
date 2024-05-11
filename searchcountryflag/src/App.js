@@ -24,7 +24,6 @@ export default function App() {
       const filterBySearch = countries.filter((item) => {
         return item.name.common.toLowerCase().includes(search.toLowerCase());
       });
-      console.log(filterBySearch);
       setFilterCountries(filterBySearch);
     } 
   };
